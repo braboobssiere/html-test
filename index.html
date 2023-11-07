@@ -77,7 +77,135 @@
             document.getElementById("jsInput").value = "";
             document.cookie = "htmlCode=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
             document.cookie = "cssCode=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HTML Code Tester</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <style>
+        /* Add some basic styling to the output and console areas */
+        #output {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        #console {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+        }
+        
+        .syntax-error {
+            background-color: #ff9999;
+        }
+        
+        /* Style for tabs */
+        .tabs {
+            display: flex;
+        }
+        
+        .tab {
+            padding: 10px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+        }
+        
+        .active-tab {
+            background-color: #eee;
+        }
+        
+        /* Style for the code editor */
+        .code-editor {
+            display: none;
+        }
+        
+        .active-editor {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>HTML Code Tester</h1>
+    
+    <!-- Tabs for HTML, CSS, and JavaScript -->
+    <div class="tabs">
+        <div class="tab active-tab" id="htmlTab" onclick="switchTab('htmlTab', 'htmlEditor')">HTML</div>
+        <div class="tab" id="cssTab" onclick="switchTab('cssTab', 'cssEditor')">CSS</div>
+        <div class="tab" id="jsTab" onclick="switchTab('jsTab', 'jsEditor')">JavaScript</div>
+    </div>
+    
+    <!-- Textareas for HTML, CSS, and JavaScript -->
+    <div id="htmlEditor" class="code-editor active-editor">
+        <textarea id="htmlInput" rows="10" cols="50"></textarea>
+    </div>
+    <div id="cssEditor" class="code-editor">
+        <textarea id="cssInput" rows="5" cols="50"></textarea>
+    </div>
+    <div id="jsEditor" class="code-editor">
+        <textarea id="jsInput" rows="5" cols="50"></textarea>
+    </div>
+    
+    <button onclick="runCode()">Run</button>
+    <button onclick="saveCodeToCookie()">Save Code in Cookie</button>
+    <button onclick="clearCodeAndCookie()">Clear Code and Cookie</button>
+    
+    <h2>Output</h2>
+    <div id="output">
+        <!-- Add viewport meta tag for the output section -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </div>
+    
+    <h2>Console</h2>
+    <div id="console"></div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("htmlInput").value = getCookie("htmlCode") || "";
+            document.getElementById("cssInput").value = getCookie("cssCode") || "";
+            document.getElementById("jsInput").value = getCookie("jsCode") || "";
+        });
+
+        function getCookie(name) {
+            const value = "; " + document.cookie;
+            const parts = value.split("; " + name + "=");
+            if (parts.length == 2) return parts.pop().split(";").shift();
+        }
+
+        function saveCodeToCookie() {
+            const htmlCode = document.getElementById("htmlInput").value;
+            const cssCode = document.getElementById("cssInput").value;
+            const jsCode = document.getElementById("jsInput").value;
+
+            document.cookie = "htmlCode=" + htmlCode;
+            document.cookie = "cssCode=" + cssCode;
+            document.cookie = "jsCode=" + jsCode;
+        }
+
+        function clearCodeAndCookie() {
+            document.getElementById("htmlInput").value = "";
+            document.getElementById("cssInput").value = "";
+            document.getElementById("jsInput").value = "";
+            document.cookie = "htmlCode=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+            document.cookie = "cssCode=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
             document.cookie = "jsCode=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+        }
+        
+        // Function to switch tabs
+        function switchTab(tabId, editorId) {
+            const tabs = document.querySelectorAll(".tab");
+            const editors = document.querySelectorAll(".code-editor");
+
+            // Hide all editors
+            editors.forEach(editor => editor.classList.remove("active-editor"));
+            
+            // Deactivate all tabs
+            tabs.forEach(tab => tab.classList.remove("active-tab"));
+            
+            // Activate the selected tab and editor
+            document.getElementById(tabId).classList.add("active-tab");
+            document.getElementById(editorId).classList.add("active-editor");
         }
     </script>
 
