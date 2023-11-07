@@ -70,9 +70,13 @@
         <textarea id="jsInput" rows="5" cols="50"></textarea>
     </div>
     
+    <button onclick="runCode()">Run</button>
+    <button onclick="saveCodeToCookie()">Save Code in Cookie</button>
+    <button onclick="clearCodeAndCookie()">Clear Code and Cookie</button>
+
     <!-- Tabs for Output and Console -->
     <div class="tabs">
-        <div class="tab" id="outputTab" onclick="switchTab('outputTab', 'output')">Output</div>
+        <div class="tab active-tab" id="outputTab" onclick="switchTab('outputTab', 'output')">Output</div>
         <div class="tab" id="consoleTab" onclick="switchTab('consoleTab', 'console')">Console</div>
     </div>
     
@@ -84,10 +88,6 @@
         <!-- Add viewport meta tag for the console section -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </div>
-    
-    <button onclick="runCode()">Run</button>
-    <button onclick="saveCodeToCookie()">Save Code in Cookie</button>
-    <button onclick="clearCodeAndCookie()">Clear Code and Cookie</button>
     
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -125,6 +125,8 @@
         function switchTab(tabId, editorId) {
             const tabs = document.querySelectorAll(".tab");
             const editors = document.querySelectorAll(".code-editor");
+            const outputConsoleTabs = document.querySelectorAll(".output-console-tab");
+            const outputConsoleSections = document.querySelectorAll(".output-console-section");
 
             // Hide all editors
             editors.forEach(editor => editor.classList.remove("active-editor"));
