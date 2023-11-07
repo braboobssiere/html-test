@@ -3,6 +3,11 @@
 <head>
     <title>HTML Code Tester</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Include Prism.js and its CSS from jsDelivr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.css">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.js"></script>
+    
     <style>
         /* Add some basic styling to the output and console areas */
         #output {
@@ -15,6 +20,10 @@
             border: 1px solid #ccc;
             padding: 10px;
             margin: 10px;
+        }
+        
+        .syntax-error {
+            background-color: #ff9999;
         }
     </style>
 </head>
@@ -38,35 +47,52 @@
     <h2>Console</h2>
     <div id="console"></div>
     
+    <h2>Live Preview</h2>
+    <div id="livePreview"></div>
+    
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("htmlInput").value = "";
+            document.getElementById("cssInput").value = "";
+            document.getElementById("jsInput").value = "";
+        });
+
         function runCode() {
             const htmlCode = document.getElementById("htmlInput").value;
             const cssCode = document.getElementById("cssInput").value;
             const jsCode = document.getElementById("jsInput").value;
-            
+
             const output = document.getElementById("output");
             const consoleOutput = document.getElementById("console");
-            
+            const livePreview = document.getElementById("livePreview");
+
             output.innerHTML = htmlCode;
-            
-            // Create a <style> element for the CSS and add it to the <head>
+
             const styleElement = document.createElement("style");
             styleElement.innerHTML = cssCode;
             document.head.appendChild(styleElement);
-            
-            // Run the JavaScript code and capture console logs
+
             const consoleLogs = [];
             console.log = (message) => {
                 consoleLogs.push(message);
             };
-            
+
             try {
+                // Use a try-catch block to catch syntax errors in JavaScript
                 eval(jsCode);
             } catch (error) {
                 consoleLogs.push("Error: " + error.message);
+                // Highlight the line with the syntax error
+                const lines = jsCode.split('\n');
+                const errorLine = error.lineNumber - 1;
+                if (errorLine >= 0 && errorLine < lines.length) {
+                    lines[errorLine] = `<span class="syntax-error">${lines[errorLine]}</span>`;
+                    livePreview.innerHTML = Prism.highlight(htmlCode, Prism.languages.html);
+                    livePreview.innerHTML += "<style>" + Prism.highlight(cssCode, Prism.languages.css) + "</style>";
+                    livePreview.innerHTML += "<script>" + Prism.highlight(lines.join('\n'), Prism.languages.javascript) + "</script>";
+                }
             }
-            
-            // Display console logs
+
             consoleOutput.innerHTML = consoleLogs.join("<br>");
         }
     </script>
