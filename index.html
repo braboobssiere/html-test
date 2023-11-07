@@ -11,6 +11,7 @@
             padding: 1px; /* Adjusted padding */
             margin: 1px; /* Adjusted margin */
             font-size: 16px; /* Adjusted font size */
+            display: none; /* Hide the console initially */
         }
         
         .syntax-error {
@@ -65,14 +66,13 @@
     <div id="cssEditor" class="code-editor">
         <textarea id="cssInput" rows="5" cols="50"></textarea>
     </div>
-<div id="jsEditor" class="code-editor"> <!-- Add the class attribute -->
-    <textarea id="jsInput" rows="5" cols="50"></textarea>
-</div>
-
+    <div id="jsEditor" class="code-editor">
+        <textarea id="jsInput" rows="5" cols="50"></textarea>
+    </div>
     
     <!-- Tabs for Output and Console -->
     <div class="tabs">
-        <div class="tab active-tab" id="outputTab" onclick="switchTab('outputTab', 'output')">Output</div>
+        <div class="tab" id="outputTab" onclick="switchTab('outputTab', 'output')">Output</div>
         <div class="tab" id="consoleTab" onclick="switchTab('consoleTab', 'console')">Console</div>
     </div>
     
@@ -130,7 +130,7 @@
             editors.forEach(editor => editor.classList.remove("active-editor"));
             
             // Deactivate all tabs
-            tabs.forEach(tab => tab.classList remove("active-tab"));
+            tabs.forEach(tab => tab.classList.remove("active-tab"));
             
             // Activate the selected tab and editor
             document.getElementById(tabId).classList.add("active-tab");
