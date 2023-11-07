@@ -6,16 +6,11 @@
     
     <style>
         /* Add some basic styling to the output and console areas */
-        #output {
+        #output, #console {
             border: 1px solid #ccc;
-            padding: 10px;
-            margin: 10px;
-        }
-
-        #console {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin: 10px;
+            padding: 1px; /* Adjusted padding */
+            margin: 1px; /* Adjusted margin */
+            font-size: 16px; /* Adjusted font size */
         }
         
         .syntax-error {
@@ -31,10 +26,16 @@
             padding: 10px;
             cursor: pointer;
             border: 1px solid #ccc;
+            font-size: 16px;
         }
         
         .active-tab {
             background-color: #eee;
+        }
+        
+        /* Style for the title */
+        h1 {
+            font-size: 18px;
         }
         
         /* Style for the code editor */
@@ -68,18 +69,24 @@
         <textarea id="jsInput" rows="5" cols="50"></textarea>
     </div>
     
-    <button onclick="runCode()">Run</button>
-    <button onclick="saveCodeToCookie()">Save Code in Cookie</button>
-    <button onclick="clearCodeAndCookie()">Clear Code and Cookie</button>
+    <!-- Tabs for Output and Console -->
+    <div class="tabs">
+        <div class="tab active-tab" id="outputTab" onclick="switchTab('outputTab', 'output')">Output</div>
+        <div class="tab" id="consoleTab" onclick="switchTab('consoleTab', 'console')">Console</div>
+    </div>
     
-    <h2>Output</h2>
-    <div id="output">
-        <!-- Add viewport meta tag for the output section -->
+    <!-- Output and Console sections -->
+    <div id="output" class="active-editor">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </div>
+    <div id="console">
+        <!-- Add viewport meta tag for the console section -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </div>
     
-    <h2>Console</h2>
-    <div id="console"></div>
+    <button onclick="runCode()">Run</button>
+    <button onclick="saveCodeToCookie()">Save Code in Cookie</button>
+    <button onclick="clearCodeAndCookie()">Clear Code and Cookie</button>
     
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -122,7 +129,7 @@
             editors.forEach(editor => editor.classList.remove("active-editor"));
             
             // Deactivate all tabs
-            tabs.forEach(tab => tab.classList.remove("active-tab"));
+            tabs.forEach(tab => tab.classList remove("active-tab"));
             
             // Activate the selected tab and editor
             document.getElementById(tabId).classList.add("active-tab");
