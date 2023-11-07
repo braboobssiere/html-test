@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <!-- Include Prism.js and its CSS from jsDelivr -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.css">
-    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.26.0/themes/prism.css">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.26.0/prism.js"></script>
     
     <style>
         /* Add some basic styling to the output and console areas */
@@ -56,7 +56,9 @@
             document.getElementById("cssInput").value = "";
             document.getElementById("jsInput").value = "";
         });
-
+    </script>
+    
+    <script>
         function runCode() {
             const htmlCode = document.getElementById("htmlInput").value;
             const cssCode = document.getElementById("cssInput").value;
@@ -83,13 +85,13 @@
             } catch (error) {
                 consoleLogs.push("Error: " + error.message);
                 // Highlight the line with the syntax error
-                const lines = jsCode.split('\n');
-                const errorLine = error.lineNumber - 1;
-                if (errorLine >= 0 && errorLine < lines.length) {
+                const errorLine = error.line - 1;
+                if (errorLine >= 0) {
+                    const lines = jsCode.split('\n');
                     lines[errorLine] = `<span class="syntax-error">${lines[errorLine]}</span>`;
                     livePreview.innerHTML = Prism.highlight(htmlCode, Prism.languages.html);
                     livePreview.innerHTML += "<style>" + Prism.highlight(cssCode, Prism.languages.css) + "</style>";
-                    livePreview.innerHTML += "<script>" + Prism.highlight(lines.join('\n'), Prism.languages.javascript) + "</script>";
+                    livePreview.innerHTML += "<scr" + "ipt>" + Prism.highlight(lines.join('\n'), Prism.languages.js) + "</scr" + "ipt>";
                 }
             }
 
@@ -97,4 +99,5 @@
         }
     </script>
 </body>
-</html>
+    </html>
+    
