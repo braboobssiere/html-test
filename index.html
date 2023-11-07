@@ -33,6 +33,28 @@
         .active-tab {
             background-color: #eee;
         }
+
+        .input-tabs {
+            display: flex;
+        }
+
+        .input-tab {
+            padding: 10px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        .output-console-tabs {
+            display: flex;
+        }
+
+        .output-console-tab {
+            padding: 10px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
         
         /* Style for the title */
         h1 {
@@ -53,10 +75,10 @@
     <h1>HTML Code Tester</h1>
     
     <!-- Tabs for HTML, CSS, and JavaScript -->
-    <div class="tabs">
-        <div class="tab active-tab" id="htmlTab" onclick="switchTab('htmlTab', 'htmlEditor')">HTML</div>
-        <div class="tab" id="cssTab" onclick="switchTab('cssTab', 'cssEditor')">CSS</div>
-        <div class="tab" id="jsTab" onclick="switchTab('jsTab', 'jsEditor')">JavaScript</div>
+    <div class="input-tabs">
+        <div class="input-tab active-tab" id="htmlTab" onclick="switchTab('htmlTab', 'htmlEditor')">HTML</div>
+        <div class="input-tab" id="cssTab" onclick="switchTab('cssTab', 'cssEditor')">CSS</div>
+        <div class="input-tab" id="jsTab" onclick="switchTab('jsTab', 'jsEditor')">JavaScript</div>
     </div>
     
     <!-- Textareas for HTML, CSS, and JavaScript -->
@@ -70,14 +92,10 @@
         <textarea id="jsInput" rows="5" cols="50"></textarea>
     </div>
     
-    <button onclick="runCode()">Run</button>
-    <button onclick="saveCodeToCookie()">Save Code in Cookie</button>
-    <button onclick="clearCodeAndCookie()">Clear Code and Cookie</button>
-
     <!-- Tabs for Output and Console -->
-    <div class="tabs">
-        <div class="tab active-tab" id="outputTab" onclick="switchTab('outputTab', 'output')">Output</div>
-        <div class="tab" id="consoleTab" onclick="switchTab('consoleTab', 'console')">Console</div>
+    <div class="output-console-tabs">
+        <div class="output-console-tab active-tab" id="outputTab" onclick="switchTab('outputTab', 'output')">Output</div>
+        <div class="output-console-tab" id="consoleTab" onclick="switchTab('consoleTab', 'console')">Console</div>
     </div>
     
     <!-- Output and Console sections -->
@@ -88,6 +106,10 @@
         <!-- Add viewport meta tag for the console section -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </div>
+    
+    <button onclick="runCode()">Run</button>
+    <button onclick="saveCodeToCookie()">Save Code in Cookie</button>
+    <button onclick="clearCodeAndCookie()">Clear Code and Cookie</button>
     
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -123,52 +145,29 @@
         
         // Function to switch tabs
         function switchTab(tabId, editorId) {
-            const tabs = document.querySelectorAll(".tab");
+            const inputTabs = document.querySelectorAll(".input-tab");
             const editors = document.querySelectorAll(".code-editor");
             const outputConsoleTabs = document.querySelectorAll(".output-console-tab");
             const outputConsoleSections = document.querySelectorAll(".output-console-section");
 
-            // Hide all editors
+            // Hide all editors and sections
             editors.forEach(editor => editor.classList.remove("active-editor"));
+            outputConsoleSections.forEach(section => section.style.display = 'none');
             
             // Deactivate all tabs
-            tabs.forEach(tab => tab.classList.remove("active-tab"));
+            inputTabs.forEach(tab => tab.classList.remove("active-tab"));
+            outputConsoleTabs.forEach(tab => tab.classList.remove("active-tab"));
             
             // Activate the selected tab and editor
             document.getElementById(tabId).classList.add("active-tab");
             document.getElementById(editorId).classList.add("active-editor");
-        }
-    </script>
 
-    <script>
-        function runCode() {
-            const htmlCode = document.getElementById("htmlInput").value;
-            const cssCode = document.getElementById("cssInput").value;
-            const jsCode = document.getElementById("jsInput").value;
-
-            const output = document.getElementById("output");
-            const consoleOutput = document.getElementById("console");
-
-            output.innerHTML = htmlCode;
-
-            const styleElement = document.createElement("style");
-            styleElement.innerHTML = cssCode;
-            document.head.appendChild(styleElement);
-
-            const consoleLogs = [];
-            console.log = (message) => {
-                consoleLogs.push(message);
-            };
-
-            try {
-                // Use a try-catch block to catch syntax errors in JavaScript
-                eval(jsCode);
-            } catch (error) {
-                consoleLogs.push("Error: " + error.message);
-                // Highlight the line with the syntax error (if needed)
+            // Show the corresponding output or console section
+            if (editorId === 'output') {
+                document.getElementById('output').style.display = 'block';
+            } else if (editorId === 'console') {
+                document.getElementById('console').style.display = 'block';
             }
-
-            consoleOutput.innerHTML = consoleLogs.join("<br>");
         }
     </script>
 </body>
