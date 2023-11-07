@@ -31,7 +31,7 @@
             padding: 10px;
             cursor: pointer;
             border: 1px solid #ccc;
-            font-size: 16px;
+            font-size: 16px; /* Adjusted font size for tabs */
         }
         
         .active-tab {
@@ -40,7 +40,7 @@
 
         /* Style for the title */
         h1 {
-            font-size: 18px;
+            font-size: 18px; /* Adjusted font size for the title */
         }
         
         /* Style for the code editor */
@@ -50,22 +50,6 @@
         
         .active-editor {
             display: block;
-        }
-
-        /* Style for output and console tabs */
-        .output-console-tabs {
-            display: flex;
-        }
-
-        .output-console-tab {
-            padding: 10px;
-            cursor: pointer;
-            border: 1px solid #ccc;
-            font-size: 16px;
-        }
-
-        .active-output-console-tab {
-            background-color: #eee;
         }
     </style>
 </head>
@@ -78,12 +62,6 @@
         <div class="tab" id="cssTab" onclick="switchTab('cssTab', 'cssEditor')">CSS</div>
         <div class="tab" id="jsTab" onclick="switchTab('jsTab', 'jsEditor')">JavaScript</div>
     </div>
-
-    <!-- Tabs for Output and Console -->
-    <div class="output-console-tabs">
-        <div class="output-console-tab active-output-console-tab" id="outputTab" onclick="switchTab('outputTab', 'output')">Output</div>
-        <div class="output-console-tab" id="consoleTab" onclick="switchTab('consoleTab', 'console')">Console</div>
-    </div>
     
     <!-- Textareas for HTML, CSS, and JavaScript -->
     <div id="htmlEditor" class="code-editor active-editor">
@@ -92,17 +70,22 @@
     <div id="cssEditor" class="code-editor">
         <textarea id="cssInput" rows="5" cols="50"></textarea>
     </div>
-    <div id="jsEditor" class="code-editor">
+    <div id="jsEditor" class "code-editor">
         <textarea id="jsInput" rows="5" cols="50"></textarea>
     </div>
-
-    <!-- Output and Console sections -->
-    <div id="output" class="code-editor active-editor"></div>
-    <div id="console" class="code-editor"></div>
     
     <button onclick="runCode()">Run</button>
     <button onclick="saveCodeToCookie()">Save Code in Cookie</button>
     <button onclick="clearCodeAndCookie()">Clear Code and Cookie</button>
+    
+    <h2>Output</h2>
+    <div id="output">
+        <!-- Add viewport meta tag for the output section -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </div>
+    
+    <h2>Console</h2>
+    <div id="console"></div>
     
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -140,13 +123,9 @@
         function switchTab(tabId, editorId) {
             const tabs = document.querySelectorAll(".tab");
             const editors = document.querySelectorAll(".code-editor");
-            const outputConsoleTabs = document.querySelectorAll(".output-console-tab");
-            const outputConsoleEditors = document.querySelectorAll(".code-editor");
 
-            // Hide all editors and output/console tabs
+            // Hide all editors
             editors.forEach(editor => editor.classList.remove("active-editor"));
-            outputConsoleEditors.forEach(editor => editor.classList.remove("active-editor"));
-            outputConsoleTabs.forEach(tab => tab.classList.remove("active-output-console-tab"));
             
             // Deactivate all tabs
             tabs.forEach(tab => tab.classList.remove("active-tab"));
