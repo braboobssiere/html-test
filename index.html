@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <h1>HTML Code Tester</h1>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <style>
@@ -10,25 +9,18 @@
             border: 1px solid #ccc;
             padding: 1px;
             margin: 1px;
+            width: 100%;
         }
 
         #console {
             border: 1px solid #ccc;
             padding: 1px;
             margin: 1px;
+            width: 100%;
         }
         
         .syntax-error {
-            background-color: #ff9999;
-        }
-        
-        /* Style for the title */
-        h1 {
-            font-size: 18px;
-        }
-
-        h2 {
-            font-size: 16px;
+            border: 1px solid red; /* Customize the style for syntax errors */
         }
         
         /* Style for tabs */
@@ -55,9 +47,15 @@
         .active-editor {
             display: block;
         }
+
+        /* Make textareas full width */
+        textarea {
+            width: 100%;
+        }
     </style>
 </head>
 <body>
+    <h1>HTML Code Tester</h1>
     
     <!-- Tabs for HTML, CSS, and JavaScript -->
     <div class="tabs">
@@ -82,25 +80,79 @@
     <button onclick="clearCodeAndCookie()">Clear Code and Cookie</button>
     
     <h2>Output</h2>
-    <div id="output">
-        <!-- Add viewport meta tag for the output section -->
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-    </div>
+    <div id="output"></div>
     
     <h2>Console</h2>
     <div id="console"></div>
     
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            document.getElementById("htmlInput").value = getCookie("htmlCode") || "";
-            document.getElementById("cssInput").value = getCookie("cssCode") || "";
-            document.getElementById("jsInput").value = getCookie("jsCode") || "";
-        });
+        function switchTab(tabId, editorId) {
+            const tabs = document.querySelectorAll(".tab");
+            const editors = document.querySelectorAll(".code-editor");
 
-        function getCookie(name) {
-            const value = "; " + document.cookie;
-            const parts = value.split("; " + name + "=");
-            if (parts.length == 2) return parts.pop().split(";").shift();
+            // Hide all editors
+            editors.forEach(editor => editor.classList.remove("active-editor"));
+            
+            // Deactivate all tabs
+            tabs.forEach(tab => tab.classList.remove("active-tab"));
+            
+            // Activate the selected tab and editor
+            document.getElementById(tabId).classList.add("active-tab");
+            document.getElementById(editorId).classList.add("active-editor");
+        }
+        
+        // Rest of your JavaScript code goes here...
+       function runCode() {
+    const htmlCode = document.getElementById("htmlInput").value;
+    const cssCode = document.getElementById("cssInput").value;
+    const jsCode = document.getElementById("jsInput").value;
+
+    const output = document.getElementById("output");
+    const consoleOutput = document.getElementById("console");
+    const jsEditor = document.getElementById("jsEditor");
+
+    output.innerHTML = htmlCode;
+
+    const styleElement = document.createElement("style");
+    styleElement.innerHTML = cssCode;
+    document.head.appendChild(styleElement);
+
+    const consoleLogs = [];
+    let hasSyntaxError = false;
+
+    // Clear the console output before running code
+    consoleOutput.innerHTML = "";
+
+    // Override console.log to capture and display log messages
+    const originalConsoleLog = console.log;
+    console.log = (message) => {
+        consoleLogs.push(message);
+        originalConsoleLog(message); // Call the original console.log
+    };
+
+    try {
+        // Use a try-catch block to catch syntax errors in JavaScript
+        eval(jsCode);
+    } catch (error) {
+        hasSyntaxError = true;
+        consoleLogs.push("Error: " + error.message);
+    }
+
+    // Restore the original console.log
+    console.log = originalConsoleLog;
+
+    // Display console log messages
+    consoleLogs.forEach((log) => {
+        consoleOutput.innerHTML += log + "<br>";
+    });
+
+    // Highlight the JavaScript editor if there's a syntax error
+    if (hasSyntaxError) {
+        jsEditor.classList.add("syntax-error");
+    } else {
+        jsEditor.classList.remove("syntax-error"
+                            );
+    }
         }
 
         function saveCodeToCookie() {
@@ -121,55 +173,7 @@
             document.cookie = "cssCode=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
             document.cookie = "jsCode=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
         }
-        
-        // Function to switch tabs
-        function switchTab(tabId, editorId) {
-            const tabs = document.querySelectorAll(".tab");
-            const editors = document.querySelectorAll(".code-editor");
-
-            // Hide all editors
-            editors.forEach(editor => editor.classList.remove("active-editor"));
-            
-            // Deactivate all tabs
-            tabs.forEach(tab => tab.classList.remove("active-tab"));
-            
-            // Activate the selected tab and editor
-            document.getElementById(tabId).classList.add("active-tab");
-            document.getElementById(editorId).classList.add("active-editor");
-        }
-    </script>
-
-    <script>
-        function runCode() {
-            const htmlCode = document.getElementById("htmlInput").value;
-            const cssCode = document.getElementById("cssInput").value;
-            const jsCode = document.getElementById("jsInput").value;
-
-            const output = document.getElementById("output");
-            const consoleOutput = document.getElementById("console");
-
-            output.innerHTML = htmlCode;
-
-            const styleElement = document.createElement("style");
-            styleElement.innerHTML = cssCode;
-            document.head.appendChild(styleElement);
-
-            const consoleLogs = [];
-            console.log = (message) => {
-                consoleLogs.push(message);
-            };
-
-            try {
-                // Use a try-catch block to catch syntax errors in JavaScript
-                eval(jsCode);
-            } catch (error) {
-                consoleLogs.push("Error: " + error.message);
-                // Highlight the line with the syntax error (if needed)
-            }
-
-            consoleOutput.innerHTML = consoleLogs.join("<br>");
-        }
     </script>
 </body>
-    </html>
-    
+        </html>
+        
