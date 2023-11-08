@@ -100,9 +100,8 @@
             document.getElementById(tabId).classList.add("active-tab");
             document.getElementById(editorId).classList.add("active-editor");
         }
-        
-        // Rest of your JavaScript code goes here...
-       function runCode() {
+
+        function runCode() {
     const htmlCode = document.getElementById("htmlInput").value;
     const cssCode = document.getElementById("cssInput").value;
     const jsCode = document.getElementById("jsInput").value;
@@ -120,14 +119,15 @@
     const consoleLogs = [];
     let hasSyntaxError = false;
 
-    // Clear the console output before running code
+    // Clear the in-page console output before running code
     consoleOutput.innerHTML = "";
 
-    // Override console.log to capture and display log messages
+    // Capture console.log messages in a separate array
+    const capturedLogs = [];
     const originalConsoleLog = console.log;
     console.log = (message) => {
-        consoleLogs.push(message);
-        originalConsoleLog(message); // Call the original console.log
+        capturedLogs.push(message);
+        originalConsoleLog(message);
     };
 
     try {
@@ -135,14 +135,15 @@
         eval(jsCode);
     } catch (error) {
         hasSyntaxError = true;
-        consoleLogs.push("Error: " + error.message);
+        capturedLogs.push("Error: " + error.message);
     }
 
     // Restore the original console.log
     console.log = originalConsoleLog;
 
-    // Display console log messages
-    consoleLogs.forEach((log) => {
+    // Display console log messages in the in-page console
+    capturedLogs.forEach((log) => {
+        consoleLogs.push(log);
         consoleOutput.innerHTML += log + "<br>";
     });
 
@@ -151,7 +152,7 @@
         jsEditor.classList.add("syntax-error");
     } else {
         jsEditor.classList.remove("syntax-error"
-                            );
+        );
     }
         }
 
